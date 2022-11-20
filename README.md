@@ -63,7 +63,7 @@ python3 setup.py install
 如下图所示：
 ![image](https://user-images.githubusercontent.com/118670924/202912824-d3542f3d-c6d9-427a-8c85-2437057424d6.png)
 
-* *-u / --url* 指定单个 URL 或者 CIDR，支持 IPv4 / IPv6。使用 -p 参数可以提供额外的端口，配合 CIDR 可以很方便的探测一个目标网段
+* **-u / --url** : 指定单个 URL 或者 CIDR，支持 IPv4 / IPv6。使用 -p 参数可以提供额外的端口，配合 CIDR 可以很方便的探测一个目标网段
 ```
 pocsuite -r poc.py -u https://example.com
 pocsuite -r poc.py -u fd12:3456:789a:1::/120
@@ -71,13 +71,51 @@ pocsuite -r poc.py -u 172.16.218.1/24
 pocsuite -r poc.py -u "https://[fd12:3456:789a:1::f0]:8443/test"
 ```
 
-* *-f / --file* 指定一个文件，将多个 URL / CIDR 存到文件中，每行一个
+* **-f / --file** : 指定一个文件，将多个 URL / CIDR 存到文件中，每行一个
 ```
 # this is url.txt
 172.16.218.1/24
 https://example.com
 # localhost
 ```
-`pocsuite -r poc.py -f url.txt`
+```pocsuite -r poc.py -f url.txt```
 
+* **-p / --ports** : 为 URL 或 CIDR 添加额外端口，格式：[协议:]端口, 协议是可选的，多个端口间以 , 分隔。
 
+例如：pocsuite -r poc.py -u 172.16.218.1/31 -p 8080,https:8443 会加载以下目标。
+
+```
+172.16.218.0
+172.16.218.0:8080
+https://172.16.218.0:8443
+172.16.218.1
+172.16.218.1:8080
+https://172.16.218.1:8443
+
+```
+* **-s**
+使用-s 参数可以不加载 target 本身的端口，只使用 -p 提供的端口。
+
+例如：pocsuite -r poc.py -u 172.16.218.1/31 -p 8080,https:8443 -s 会加载以下目标。
+
+```
+172.16.218.0:8080
+https://172.16.218.0:8443
+172.16.218.1:8080
+https://172.16.218.1:8443
+```
+
+* **--dork-fofa** / **--fofa-user** / **--fofa-token**
+通过 Fofa API 批量获取测试目标。
+
+首次使用会提示输入 Fofa user email 和 Fofa API Key，验证可用后会保存到 $HOME/.pocsuiterc 文件中，除非 token 过期，下次使用不会重复询问，也可使用 --fofa-user 和 --fofa-token 参数提供。单页检索数量为 100。
+```
+pocsuite -r poc.py --dork-fofa 'thinkphp'
+
+...
+[16:33:23] [INFO] {"error":false,"email":"***","username":"***","fcoin":48,"isvip":true,"vip_level":2,"is_verified":false,"avatar":"https://nosec.org/missing.jpg","message":"","fofacli_ver":"4.0.3","fofa_server":true}
+[16:33:23] [INFO] [PLUGIN] try fetch targets from Fofa with dork: thinkphp
+[16:33:25] [INFO] [PLUGIN] got 88 target(s) from Fofa
+[16:33:25] [INFO] pocsusite got a total of 88 tasks
+[16:33:25] [INFO] starting 88 threads
+```
