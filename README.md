@@ -222,6 +222,8 @@ Pocsuite3 在 shell 模式会默认监听本机的 6666 端（可通过 --lhost�
 
 如下：
 ![image](https://user-images.githubusercontent.com/118670924/202914409-761e0be4-42e5-4fe5-a64e-6fb811d7a92a.png)
+![image](https://user-images.githubusercontent.com/118670924/202914468-2077d1f2-2581-4123-84d1-57152a29ffbd.png)
+
 
 在控制台中也可以执行系统命令。
 
