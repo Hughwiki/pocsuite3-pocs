@@ -63,6 +63,12 @@ python3 setup.py install
 如下图所示：
 ![image](https://user-images.githubusercontent.com/118670924/202912824-d3542f3d-c6d9-427a-8c85-2437057424d6.png)
 
+---
+
+# 命令参数解析
+
+## 单个目标检测
+
 * **-u / --url** : 指定单个 URL 或者 CIDR，支持 IPv4 / IPv6。使用 -p 参数可以提供额外的端口，配合 CIDR 可以很方便的探测一个目标网段
 ```
 pocsuite -r poc.py -u https://example.com
@@ -70,6 +76,8 @@ pocsuite -r poc.py -u fd12:3456:789a:1::/120
 pocsuite -r poc.py -u 172.16.218.1/24
 pocsuite -r poc.py -u "https://[fd12:3456:789a:1::f0]:8443/test"
 ```
+
+## 批量目标检测
 
 * **-f / --file** : 指定一个文件，将多个 URL / CIDR 存到文件中，每行一个
 ```
@@ -79,6 +87,8 @@ https://example.com
 # localhost
 ```
 ```pocsuite -r poc.py -f url.txt```
+
+## 指定端口、协议
 
 * **-p / --ports** : 为 URL 或 CIDR 添加额外端口，格式：[协议:]端口, 协议是可选的，多个端口间以 , 分隔。
 
@@ -93,6 +103,9 @@ https://172.16.218.0:8443
 https://172.16.218.1:8443
 
 ```
+
+## 修改默认端口协议
+
 * **-s**
 使用-s 参数可以不加载 target 本身的端口，只使用 -p 提供的端口。
 
@@ -104,6 +117,8 @@ https://172.16.218.0:8443
 172.16.218.1:8080
 https://172.16.218.1:8443
 ```
+
+## 搜索引擎查询
 
 * **--dork-fofa** / **--fofa-user** / **--fofa-token**
 通过 Fofa API 批量获取测试目标。
@@ -119,3 +134,35 @@ pocsuite -r poc.py --dork-fofa 'thinkphp'
 [16:33:25] [INFO] pocsusite got a total of 88 tasks
 [16:33:25] [INFO] starting 88 threads
 ```
+
+## POC 脚本加载 指定一个或多个 poc/poc路径
+* -r ：指定一个或多个 PoC 路径（或目录），如果提供的是目录，框架将遍历目录然后加载所有符合条件的 PoC。多个路径或目录之间用空格分隔。
+
+```
+# 加载单个 PoC 文件
+pocsuite -r ecshop_rce.py
+
+# 加载多个 PoC 文件
+pocsuite -r pocsuite3/pocs/ecshop_rce.py pocsuite3/pocs/thinkphp_rce.py pocsuite3/pocs/wd_nas_login_bypass_rce.py
+
+# 从目录加载
+pocsuite -r pocsuite3/pocs
+
+# 加载 nuclei template
+pocsuite -r ./nuclei-templates/cves/2020/CVE-2020-14883.yaml
+
+```
+
+## POC 筛选
+* -k : 指定关键词（支持正则）对 PoC 进行筛选，如组件名称、CVE 编号等。如果我们确认了目标组件，就可以用 -k 选项找到所以对应的 PoC 对目标进行批量测试。如果只提供了 -k 选项，-r 默认为 Pocsuite3 自带的 pocsuite3/pocs 目录。
+
+```
+pocsuite -r ./pocsuite3/pocs -k thinkphp
+...
+[17:11:05] [INFO] loading PoC script './pocsuite3/pocs/thinkphp_rce.py'
+[17:11:06] [INFO] loading PoC script './pocsuite3/pocs/thinkphp_rce2.py'
+...
+
+```
+
+
