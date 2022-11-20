@@ -12,13 +12,13 @@ Pocsuite3 基于 Python3 开发，可以运行在支持 Python 3.7+ 的任何平
 pip3 install pocsuite3
 ```
 
-## 使用国内镜像加速
+## 2⃣️ 使用国内镜像加速
 ```
 pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple pocsuite3
 ```
 
 
-## 在 MacOS 上安装
+## 3⃣️ 在 MacOS 上安装
 ```
 brew update
 brew info pocsuite3
@@ -26,7 +26,7 @@ brew install pocsuite3
 ```
 
 
-## Debian, Ubuntu, Kali
+## 4⃣️ Debian, Ubuntu, Kali
 由于 Linux APT 软件仓库机制的原因，通过 apt 安装的软件包可能略低于上游版本。
 ```
 sudo apt update
@@ -34,19 +34,19 @@ sudo apt install pocsuite3
 
 ```
 
-## Docker
+## 5⃣️ Docker
 ```
 docker run -it pocsuite3/pocsuite3
 ```
 
 
-## Arch Linux
+## 6⃣️ Arch Linux
 ```
 yay pocsuite3
 ```
 
 
-## 源码安装#
+## 7⃣️ 源码安装#
 ```
 wget https://github.com/knownsec/pocsuite3/archive/master.zip
 unzip master.zip
@@ -68,7 +68,7 @@ python3 setup.py install
 
 # 3、 命令参数解析
 
-## 单个目标检测
+## 1⃣️ 单个目标检测
 
 * **-u / --url** : 指定单个 URL 或者 CIDR，支持 IPv4 / IPv6。使用 -p 参数可以提供额外的端口，配合 CIDR 可以很方便的探测一个目标网段
 ```
@@ -78,7 +78,7 @@ pocsuite -r poc.py -u 172.16.218.1/24
 pocsuite -r poc.py -u "https://[fd12:3456:789a:1::f0]:8443/test"
 ```
 
-## 批量目标检测
+## 2⃣️ 批量目标检测
 
 * **-f / --file** : 指定一个文件，将多个 URL / CIDR 存到文件中，每行一个
 ```
@@ -89,7 +89,7 @@ https://example.com
 ```
 ```pocsuite -r poc.py -f url.txt```
 
-## 指定端口、协议
+## 3⃣️ 指定端口、协议
 
 * **-p / --ports** : 为 URL 或 CIDR 添加额外端口，格式：[协议:]端口, 协议是可选的，多个端口间以 , 分隔。
 
@@ -105,7 +105,7 @@ https://172.16.218.1:8443
 
 ```
 
-## 修改默认端口协议
+## 4⃣️ 修改默认端口协议
 
 * **-s**
 使用-s 参数可以不加载 target 本身的端口，只使用 -p 提供的端口。
@@ -119,7 +119,7 @@ https://172.16.218.0:8443
 https://172.16.218.1:8443
 ```
 
-## 搜索引擎查询
+## 5⃣️ 搜索引擎查询
 
 * **--dork-fofa** / **--fofa-user** / **--fofa-token**
 通过 Fofa API 批量获取测试目标。
@@ -136,7 +136,7 @@ pocsuite -r poc.py --dork-fofa 'thinkphp'
 [16:33:25] [INFO] starting 88 threads
 ```
 
-## POC 脚本加载 指定一个或多个 poc/poc路径
+## 6⃣️ POC 脚本加载 指定一个或多个 poc/poc路径
 * -r ：指定一个或多个 PoC 路径（或目录），如果提供的是目录，框架将遍历目录然后加载所有符合条件的 PoC。多个路径或目录之间用空格分隔。
 
 ```
@@ -154,7 +154,7 @@ pocsuite -r ./nuclei-templates/cves/2020/CVE-2020-14883.yaml
 
 ```
 
-## POC 筛选
+## 7⃣️ POC 筛选
 * -k : 指定关键词（支持正则）对 PoC 进行筛选，如组件名称、CVE 编号等。如果我们确认了目标组件，就可以用 -k 选项找到所以对应的 PoC 对目标进行批量测试。如果只提供了 -k 选项，-r 默认为 Pocsuite3 自带的 pocsuite3/pocs 目录。
 
 ```
@@ -166,7 +166,7 @@ pocsuite -r ./pocsuite3/pocs -k thinkphp
 
 ```
 
-## 组件或框架历史漏洞查询
+## 8⃣️ 组件或框架历史漏洞查询
 * --vul-keyword / --ssv-id / --seebug-token
 通过 Seebug API 读取指定组件或者类型的漏洞的 PoC。
 
@@ -186,10 +186,10 @@ pocsuite --ssv-id 89715
 
 # 4、 运行控制
 
-## --threads ：线程控制
+## 1⃣️ --threads ：线程控制
 线程池大小控制，默认为 Min(150, 目标总数)。
 
-## --pcap ： 保存通信流量为.pacb文件
+## 2⃣️ --pcap ： 保存通信流量为.pacb文件
 
 在运行 PoC 时使用 --pcap 参数，可以将通信流量保存为 pcap 文件。
 
@@ -201,17 +201,17 @@ pocsuite --ssv-id 89715
 
 
 
-## 三种模式： 验证、攻击、shell
+## 3⃣️ 三种模式： 验证、攻击、shell
 
-### --verify
+### （1）--verify
 
 验证模式，执行 PoC 脚本的 _verify() 方法， 进行漏洞验证。
 
-### --attack
+### （2）--attack
 
 攻击模式，执行 PoC 脚本的 _attack() 方法，具体表现取决于方法的实现。
 
-### --shell / --lhost / --lport / --tls
+### （3）--shell / --lhost / --lport / --tls
 
 shell 模式，执行 PoC 脚本的 _shell() 方法，控制台会进入 shell 交互模式执行命令及获取输出。
 
