@@ -7,7 +7,7 @@ Pocsuite3 基于 Python3 开发，可以运行在支持 Python 3.7+ 的任何平
 
 2021 年 11 月，Pocsuite3 通过了 Debian 官方的代码及合规检查，正式加入 Debian、Ubuntu、Kali 等 Linux 发行版的软件仓库，可以通过 apt 命令一键获取。此外，Pocsuite3 也已经推送到 Python PyPi、MacOS 的 Homebrew 仓库、Archlinux 的 Aur 仓库、Dockerhub。
 
-## 使用 Python3 pip 安装
+## 1⃣️ 使用 Python3 pip 安装
 ```
 pip3 install pocsuite3
 ```
