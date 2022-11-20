@@ -165,4 +165,63 @@ pocsuite -r ./pocsuite3/pocs -k thinkphp
 
 ```
 
+## 组件或框架历史漏洞查询
+* --vul-keyword / --ssv-id / --seebug-token
+通过 Seebug API 读取指定组件或者类型的漏洞的 PoC。
+
+首次使用会提示输入 Seebug API key，验证可用后会保存到 $HOME/.pocsuiterc 文件中，除非 token 过期，下次使用不会重复询问，也可使用 --seebug-token 参数提供。
+
+```
+# 通过关键词加载
+pocsuite --vul-keyword redis
+
+# 通过漏洞编号加载
+pocsuite --ssv-id 89715
+
+
+```
+
+# 运行控制
+
+## --threads ：线程控制
+线程池大小控制，默认为 Min(150, 目标总数)。
+
+## --pcap ： 保存通信流量为.pacb文件
+
+在运行 PoC 时使用 --pcap 参数，可以将通信流量保存为 pcap 文件。
+
+![image](https://user-images.githubusercontent.com/118670924/202914082-9c9f3a14-1073-455e-836c-dbe27e32a9e3.png)
+
+通过 wireshark 打开该文件进行流量分析。
+
+![image](https://user-images.githubusercontent.com/118670924/202914127-cd2d2bc0-5560-45ee-845a-75beca0db1e5.png)
+
+
+# 三种模式： 验证、攻击、shell
+
+## --verify
+
+验证模式，执行 PoC 脚本的 _verify() 方法， 进行漏洞验证。
+
+## --attack
+
+攻击模式，执行 PoC 脚本的 _attack() 方法，具体表现取决于方法的实现。
+
+## --shell / --lhost / --lport / --tls
+
+shell 模式，执行 PoC 脚本的 _shell() 方法，控制台会进入 shell 交互模式执行命令及获取输出。
+
+Pocsuite3 在 shell 模式会默认监听本机的 6666 端（可通过 --lhost、--lport 修改），编写对应的攻击代码，让目标执行反向连接运行 Pocsuite3 系统 IP 的 6666 端口即可得到一个 shell。
+
+### Tips
+在 PoC 脚本中，attack 模式和 shell 模式的实现是可选的， 如果不指定运行模式，默认是 verify。
+
+# pocsuite 控制台参数说明
+
+使用命令 poc-console 进去交互式控制台后，可通过 help 命令查看帮助，list 或 show all 列出所有 PoC 模块，use 加载某指定模块。相关参数可通过 set / setg 命令设置。
+
+如下：
+![image](https://user-images.githubusercontent.com/118670924/202914409-761e0be4-42e5-4fe5-a64e-6fb811d7a92a.png)
+
+在控制台中也可以执行系统命令。
 
